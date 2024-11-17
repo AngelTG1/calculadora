@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora con Árbol de Derivación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #1e1e1e;
+            color: white;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+        .calculator {
+            margin-right: 50px;
+        }
+        .screen {
+            width: 200px;
+            height: 30px;
+            text-align: right;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .btn {
+            width: 50px;
+            height: 50px;
+            margin: 2px;
+            font-size: 18px;
+        }
+        #tree-output {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #333;
+            max-width: 600px;
+            max-height: 600px;
+            overflow: hidden;
+        }
+        img {
+            display: block;
+            margin: 0 auto;
+            width: 100%; /* Ajusta automáticamente el ancho de la imagen al contenedor */
+            height: auto; /* Mantén la proporción de la imagen */
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora con Árbol de Derivación</h1>
+    <div class="container">
+        <div class="calculator">
+            <input type="text" id="screen" class="screen" readonly />
+            <div>
+                <button class="btn" onclick="press('1')">1</button>
+                <button class="btn" onclick="press('2')">2</button>
+                <button class="btn" onclick="press('3')">3</button>
+                <button class="btn" onclick="press('+')">+</button>
+            </div>
+            <div>
+                <button class="btn" onclick="press('4')">4</button>
+                <button class="btn" onclick="press('5')">5</button>
+                <button class="btn" onclick="press('6')">6</button>
+                <button class="btn" onclick="press('-')">-</button>
+            </div>
+            <div>
+                <button class="btn" onclick="press('7')">7</button>
+                <button class="btn" onclick="press('8')">8</button>
+                <button class="btn" onclick="press('9')">9</button>
+                <button class="btn" onclick="press('*')">*</button>
+            </div>
+            <div>
+                <button class="btn" onclick="press('0')">0</button>
+                <button class="btn" onclick="press('(')">(</button>
+                <button class="btn" onclick="press(')')">)</button>
+                <button class="btn" onclick="press('/')">/</button>
+            </div>
+            <div>
+                <button class="btn" onclick="clearScreen()">C</button>
+                <button class="btn" onclick="calculate()">=</button>
+                <button class="btn" onclick="updateTree()">Tree</button>
+            </div>
+        </div>
+        <div id="tree-output">
+            <h3>Árbol de Derivación:</h3>
+            <img id="tree-image" src="" alt="Árbol Sintáctico" />
+        </div>
+    </div>
+
+    <script>
+        function press(value) {
+            const screen = document.getElementById("screen");
+            screen.value += value;
+        }
+
+        function clearScreen() {
+            document.getElementById("screen").value = "";
+            document.getElementById("tree-image").src = ""; // Limpiar el árbol
+        }
+
+        function calculate() {
+            const screen = document.getElementById("screen");
+            try {
+                screen.value = eval(screen.value); // Evaluar la expresión
+            } catch (e) {
+                alert("Expresión inválida");
+            }
+        }
+
+        function updateTree() {
+            const expression = document.getElementById("screen").value;
+            if (!expression) {
+                document.getElementById("tree-image").src = ""; // Limpiar el árbol si no hay expresión
+                return;
+            }
+
+            const imgUrl = `/tree/?expression=${encodeURIComponent(expression)}`; // Actualizar la URL para usar /tree/
+            document.getElementById("tree-image").src = imgUrl; // Actualizar la imagen del árbol
+        }
+    </script>
+</body>
+</html>
